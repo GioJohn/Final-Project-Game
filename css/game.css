@@ -1,9 +1,7 @@
 .background { background: url("images/blue_sky.jpg");
                  border-spacing: 0; 
-				 background-repeat: no-repeat;
 				 background-attachment: fixed;
-				 background-size: 1000px 1000px;
-				 background-position: full;
+				 
 }
 				 
 .lava{ background-image: url("images/lava.gif"); 
@@ -64,13 +62,13 @@
 	
 .game {
   overflow: hidden;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 100%;
+  max-height: 100%;
   position: relative;
 }
 
 .lost .player {
-  background: rgb(160, 64, 64);
+  background: url("images/skull.png");
 }
 .won .player {
 		background-image: url("images/won.gif");

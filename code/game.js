@@ -670,7 +670,7 @@ function runGame(plans, Display) {
           startLevel(n + 1);
         else
           console.log("You win!");
-		  image.src =  'http://yesiamcheap.com/wordpress/wp-content/uploads/2012/12/youwon1.gif';
+		  url("images/won.gif");
     });
     }
     startLevel(0);
