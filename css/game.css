@@ -1,0 +1,78 @@
+.background { background: url("images/blue_sky.jpg");
+                 border-spacing: 0; 
+				 background-repeat: no-repeat;
+				 background-attachment: fixed;
+				 background-size: 1000px 1000px;
+				 background-position: full;
+}
+				 
+.lava{ background-image: url("images/lava.gif"); 
+				
+}
+
+.wall{ background-image: url("images/wall.jpg");
+}
+
+.door{ background-image: url("images/door.gif");
+	width: 32 px;
+	height: 32 px;
+}
+
+.house{background-image: url("images/house.png");
+		width: 32;
+		height: 32;
+}
+
+.actor { 
+			position: absolute;  
+}
+		
+.coin{
+	background-image: url("images/bone.gif");
+	width: 32 px;
+	height: 32 px;
+}
+		
+.player { 
+		background-image: url("images/dog.gif");
+		width: 32px;
+		height: 32px;
+		-moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+		
+}
+		
+.run .player{
+		background-image: url("images/dog.gif");
+}	
+	
+.spikes{
+	background-image: url("images/spikes.png");
+	width: 32px;
+	height: 32px;
+}
+		
+.key{
+	background-image: url("images/key.gif");
+	width: 32px;
+	height: 32px;
+}
+	
+.game {
+  overflow: hidden;
+  max-width: 500px;
+  max-height: 500px;
+  position: relative;
+}
+
+.lost .player {
+  background: rgb(160, 64, 64);
+}
+.won .player {
+		background-image: url("images/won.gif");
+		background-position: center;
+}
