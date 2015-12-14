@@ -69,7 +69,7 @@ function drawDrop(drop) {
 	context.fill();
 }
 function drawText() {
-	context.fillStyle = 'green';
+	context.fillStyle = 'white';
 	context.font = '30px Comic Sans';
 	context.textAlign = 'center';
 	context.fillText('Are you ready to play DOG DAYS?! Click Start Below.', canvas.width/2, canvas.height/2);
