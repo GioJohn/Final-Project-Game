@@ -1,116 +1,6 @@
-//shows a start menu screen before playing the game
-var canvas;
-var context;
-var shapes = []
-var timer;
-var timerTwo;
-var Shapes = ['drop','circle','cloud'];
-function Shape(x, y, color) {
-	this.x = x;
-	this.y = y;
-	this.size = Math.random()*20+5;
-	this.dx = Math.random()*4-2;
-	this.dy = Math.random()*4-2;
-	this.color = color;
-	this.shape = Shapes[Math.floor(Math.random()*Shapes.length)];
-}
-function init() {
-	canvas = document.getElementById('canvas');
-	context = canvas.getContext("2d");
- 
-		window.addEventListener('resize', resizeCanvas, false);
-        window.addEventListener('orientationchange', resizeCanvas, false);
-        resizeCanvas();
-		canvas.onclick = function(event) {
-			handleClick(event.clientX, event.clientY);
-		};
-		timer = setInterval(resizeCanvas, 20);
-		timerTwo = setInterval(newShape, 200);
-}
-function newShape() {
-	var x = Math.random() * canvas.width;
-	var y = Math.random() * canvas.height;
-	var colors = ["red", "white", "blue"];
-	var color = colors[Math.floor(Math.random()*colors.length)];
-	shapes.push(new Shape(x, y, color));
-}
-function drawCircle(circle) {
-	context.beginPath();
-	context.arc(circle.x, circle.y, circle.size, 0, degreesToRadians(360), true);
-	context.fillStyle = circle.color;
-	context.fill();
-}
-function drawCloud(cloud) {
-	context.beginPath();
-	context.moveTo(cloud.x + 170, cloud.y + 80);
-	context.bezierCurveTo(cloud.x + 130, cloud.y + 100, cloud.x + 130, cloud.y + 150, cloud.x + 230, cloud.y + 150);
-	context.bezierCurveTo(cloud.x + 250, cloud.y + 180, cloud.x + 320, cloud.y + 180, cloud.x + 340, cloud.y + 150);
-	context.bezierCurveTo(cloud.x + 420, cloud.y + 150, cloud.x + 420, cloud.y + 120, cloud.x + 390, cloud.y + 100);
-	context.bezierCurveTo(cloud.x + 430, cloud.y + 40, cloud.x + 370, cloud.y + 30, cloud.x + 340, cloud.y + 50);
-	context.bezierCurveTo(cloud.x + 320, cloud.y + 5, cloud.x + 250, cloud.y + 20, cloud.x + 250, cloud.y + 50);
-	context.bezierCurveTo(cloud.x + 200, cloud.y + 5, cloud.x + 150, cloud.y + 20, cloud.x + 170, cloud.y + 80);
-	context.closePath();
-
-	// complete custom shape
-	context.closePath();
-	context.lineWidth = 5;
-	context.strokeStyle = cloud.color;
-	context.stroke();
-}
-function drawDrop(drop) {
-	context.beginPath();
-	context.lineJoin = 'miter';
-	context.moveTo(drop.x, drop.y);
-	context.arc(drop.x, drop.y+68, 34.5, 5.75, 3.66, false);
-	context.quadraticCurveTo(drop.x-3.5, drop.y+15, drop.x, drop.y);
-	context.closePath();
-	context.lineWidth = 2;
-	context.fillStyle = drop.color;
-	context.fill();
-}
-function drawText() {
-	context.fillStyle = 'white';
-	context.font = '30px Comic Sans';
-	context.textAlign = 'center';
-	context.fillText('Are you ready to play DOG DAYS?! Click Start Below.', canvas.width/2, canvas.height/2);
-}
-function resizeCanvas() {
-	canvas.width = window.innerWidth-20;
-    canvas.height = window.innerHeight-20;
-	fillBackgroundColor();
-	for (var i=0; i<shapes.length; i++) {
-		if (shapes[i].shape == 'circle') {
-			drawCircle(shapes[i]);
-		} else if (shapes[i].shape == 'drop') {
-			drawDrop(shapes[i]);
-		} else if (shapes[i].shape == 'cloud') {
-			drawCloud(shapes[i]);
-		}
-		if (shapes[i].x + shapes[i].dx > canvas.width || shapes[i].x + shapes[i].dx < 0)
-			shapes[i].dx = -shapes[i].dx;
-		if (shapes[i].y + shapes[i].dy > canvas.height || shapes[i].y + shapes[i].dy < 0)
-			shapes[i].dy = -shapes[i].dy;
-			shapes[i].x += shapes[i].dx;
-			shapes[i].y += shapes[i].dy;
-	}
-	drawText();		
-		
-}
-function fillBackgroundColor() {
-	//var colors = ["white", "yellow", "blue", "red"];
-	//var bgColor = colors[Math.floor(Math.random() * colors.length)];
-	context.fillStyle = 'black';
-	context.fillRect(0, 0, canvas.width, canvas.height);
-}
-function degreesToRadians(degrees) {
-	//converts from degrees to radians and returns
-	return (degrees * Math.PI)/180;
-}
-window.onload = init;
-
 // Map each class of actor to a character
 var actorChars = {
-    "@": Player,
+	"@": Player,
     "o": Coin, // A coin will wobble up and down
     "s": Spikes, //Pointy hazard that kills you
 	"k": Key, //A key that unlocks  the door ending the level
@@ -167,11 +57,11 @@ function Level(plan) {
  
 // Check if level is finished
 Level.prototype.isFinished = function() {
-   return this.status != null && this.finishDelay < 0;
+	return this.status != null && this.finishDelay < 0;
 };
 
 function Vector(x, y) {
-   this.x = x; this.y = y;
+	this.x = x; this.y = y;
 }
  
 // Vector arithmetic: v_1 + v_2 = <a,b>+<c,d> = <a+c,b+d>
@@ -187,50 +77,50 @@ Vector.prototype.times = function(factor) {
  
 // A Player has a size, speed and position.
 function Player(pos) {
-   this.pos = pos.plus(new Vector(0, 0));
-   this.size = new Vector(1, 1);
-   this.speed = new Vector(0, 0.0);
+	this.pos = pos.plus(new Vector(0, 0));
+	this.size = new Vector(1, 1);
+	this.speed = new Vector(0, 0.0);
 }
 Player.prototype.type = "player";
  
 // Adds new actor types as a class
 function Coin(pos) {
-   this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-   this.size = new Vector(1, 1);
-   // Make it go back and forth in a sine wave.
-   this.wobble = Math.random() * Math.PI * 2;
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(1, 1);
+	// Make it go back and forth in a sine wave.
+	this.wobble = Math.random() * Math.PI * 2;
 }
 Coin.prototype.type = "coin";
 
 function Spikes(pos) {
-   this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-   this.size = new Vector(1, 1);
-   // Make it go back and forth in a sine wave.
-   this.wobble = Math.random() * Math.PI * 2;
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(1, 1);
+	// Make it go back and forth in a sine wave.
+	this.wobble = Math.random() * Math.PI * 2;
 }
 Spikes.prototype.type = "spikes";
  
 function Key(pos) {
-   this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-   this.size = new Vector(1, 1);
-   // Make it go back and forth in a sine wave.
-   this.wobble = Math.random() * Math.PI * 2;
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(1, 1);
+	// Make it go back and forth in a sine wave.
+	this.wobble = Math.random() * Math.PI * 2;
 }
 Key.prototype.type = "key";
 
 function Door(pos) {
-   this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-   this.size = new Vector(1, 1);
-   // Make it go back and forth in a sine wave.
-   this.wobble = Math.random() * Math.PI * 2;
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(1, 1);
+	// Make it go back and forth in a sine wave.
+	this.wobble = Math.random() * Math.PI * 2;
 }
 Door.prototype.type = "door";
 
 function House(pos) {
-   this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
-   this.size = new Vector(0.6, 0.6);
-   // Make it go back and forth in a sine wave.
-   this.wobble = Math.random() * Math.PI * 2;
+	this.basePos = this.pos = pos.plus(new Vector(0.2, 0.1));
+	this.size = new Vector(0.6, 0.6);
+	// Make it go back and forth in a sine wave.
+	this.wobble = Math.random() * Math.PI * 2;
 }
 House.prototype.type = "house";
 
@@ -238,7 +128,7 @@ House.prototype.type = "house";
 // size and position
 function Lava(pos, ch) {
     this.pos = pos;
-    this.size = new Vector(1, 1);
+	this.size = new Vector(1, 1);
     if (ch == "=") {
     // Horizontal lava
     this.speed = new Vector(2, 0);
@@ -255,44 +145,44 @@ Lava.prototype.type = "lava";
  
 // Helper function to easily create an element of a type provided 
 function elt(name, className) {
-   var elt = document.createElement(name);
-   if (className) elt.className = className;
-   return elt;
+	var elt = document.createElement(name);
+	if (className) elt.className = className;
+	return elt;
 }
  
 // Main display class. We keep track of the scroll window using it.
 function DOMDisplay(parent, level) {
  
-   // this.wrap corresponds to a div created with class of "game"
-   this.wrap = parent.appendChild(elt("div", "game"));
-   this.level = level;
+	// this.wrap corresponds to a div created with class of "game"
+	this.wrap = parent.appendChild(elt("div", "game"));
+	this.level = level;
  
-   // In this version, we only have a static background.
-   this.wrap.appendChild(this.drawBackground());
+	// In this version, we only have a static background.
+	this.wrap.appendChild(this.drawBackground());
  
-   // Keep track of actors
-   this.actorLayer = null;
+	// Keep track of actors
+	this.actorLayer = null;
  
-   // Update the world based on player position
-   this.drawFrame();
+	// Update the world based on player position
+	this.drawFrame();
 }
  
 var scale = 32;
  
 DOMDisplay.prototype.drawBackground = function() {
-    var table = elt("table", "background");
+	var table = elt("table", "background");
     table.style.width = this.level.width * scale + "px";
  
     // Assign a class to new row element directly from the string from
     // each tile in grid
     this.level.grid.forEach(function(row) {
-     var rowElt = table.appendChild(elt("tr"));
-     rowElt.style.height = scale + "px";
-     row.forEach(function(type) {
-       rowElt.appendChild(elt("td", type));
-     });
+		var rowElt = table.appendChild(elt("tr"));
+		rowElt.style.height = scale + "px";
+		row.forEach(function(type) {
+		rowElt.appendChild(elt("td", type));
+		});
     });
-    return table;
+	return table;
 };
  
 // All actors are above (in front of) background elements.  
@@ -302,14 +192,14 @@ DOMDisplay.prototype.drawActors = function() {
  
    // Create a new element for each actor each frame
     this.level.actors.forEach(function(actor) {
-     var rect = wrap.appendChild(elt("div",
+	var rect = wrap.appendChild(elt("div",
                                      "actor " + actor.type));
-     rect.style.width = actor.size.x * scale + "px";
-     rect.style.height = actor.size.y * scale + "px";
-     rect.style.left = actor.pos.x * scale + "px";
-     rect.style.top = actor.pos.y * scale + "px";
+	rect.style.width = actor.size.x * scale + "px";
+	rect.style.height = actor.size.y * scale + "px";
+	rect.style.left = actor.pos.x * scale + "px";
+	rect.style.top = actor.pos.y * scale + "px";
     });
-    return wrap;
+		return wrap;
 };
  
 DOMDisplay.prototype.drawFrame = function() {
@@ -393,13 +283,13 @@ Level.prototype.actorAt = function(actor) {
     // Loop over each actor in our actors list and compare the 
     // boundary boxes for overlaps.
     for (var i = 0; i < this.actors.length; i++) {
-      var other = this.actors[i];
-      // if the other actor isn't the acting actor
-      if (other != actor &&
-         actor.pos.x + actor.size.x > other.pos.x &&
-         actor.pos.x < other.pos.x + other.size.x &&
-         actor.pos.y + actor.size.y > other.pos.y &&
-         actor.pos.y < other.pos.y + other.size.y)
+    var other = this.actors[i];
+    // if the other actor isn't the acting actor
+    if (other != actor &&
+        actor.pos.x + actor.size.x > other.pos.x &&
+        actor.pos.x < other.pos.x + other.size.x &&
+        actor.pos.y + actor.size.y > other.pos.y &&
+        actor.pos.y < other.pos.y + other.size.y)
         // check if the boundaries overlap by comparing all sides for
         // overlap and return the other actor if found
         return other;
@@ -410,14 +300,14 @@ Level.prototype.actorAt = function(actor) {
 Level.prototype.animate = function(step, keys) {
     // Have game continue past point of win or loss
     if (this.status != null)
-      this.finishDelay -= step;
+		this.finishDelay -= step;
  
     // Ensure each is maximum 100 milliseconds 
     while (step > 0) {
-      var thisStep = Math.min(step, maxStep);
-      this.actors.forEach(function(actor) {
-      // Allow each actor to act on their surroundings
-      actor.act(thisStep, this, keys);
+		var thisStep = Math.min(step, maxStep);
+		this.actors.forEach(function(actor) {
+		// Allow each actor to act on their surroundings
+		actor.act(thisStep, this, keys);
     }, this);
     // Do this by looping across the step size, subtracing either the
     // step itself or 100 milliseconds
@@ -428,11 +318,11 @@ Level.prototype.animate = function(step, keys) {
 Lava.prototype.act = function(step, level) {
     var newPos = this.pos.plus(this.speed.times(step));
     if (!level.obstacleAt(newPos, this.size))
-      this.pos = newPos;
+		this.pos = newPos;
     else if (this.repeatPos)
-      this.pos = this.repeatPos;
+		this.pos = this.repeatPos;
     else
-      this.speed = this.speed.times(-1);
+		this.speed = this.speed.times(-1);
 };
  
  
@@ -441,9 +331,9 @@ var maxStep = 0.05;
 var wobbleSpeed = 8, wobbleDist = 0.07;
  
 Coin.prototype.act = function(step) {
-   this.wobble += step * wobbleSpeed;
-   var wobblePos = Math.sin(this.wobble) * wobbleDist;
-   this.pos = this.basePos.plus(new Vector(0, wobblePos));
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
 };
  
 var maxStep = 0.05;
@@ -451,9 +341,9 @@ var maxStep = 0.05;
 var wobbleSpeed = 8, wobbleDist = 0.07;
  
 Spikes.prototype.act = function(step) {
-   this.wobble += step * wobbleSpeed;
-   var wobblePos = Math.sin(this.wobble) * wobbleDist;
-   this.pos = this.basePos.plus(new Vector(0, wobblePos));
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
 };
 
 var maxStep = 0.05;
@@ -461,9 +351,9 @@ var maxStep = 0.05;
 var wobbleSpeed = 8, wobbleDist = 0.07;
  
 Key.prototype.act = function(step) {
-   this.wobble += step * wobbleSpeed;
-   var wobblePos = Math.sin(this.wobble) * wobbleDist;
-   this.pos = this.basePos.plus(new Vector(0, wobblePos));
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
 };
  
 var maxStep = 0.05;
@@ -471,9 +361,9 @@ var maxStep = 0.05;
 var wobbleSpeed = 8, wobbleDist = 0.07;
  
 Door.prototype.act = function(step) {
-   this.wobble += step * wobbleSpeed;
-   var wobblePos = Math.sin(this.wobble) * wobbleDist;
-   this.pos = this.basePos.plus(new Vector(0, wobblePos));
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
 }; 
  
 var maxStep = 0.05;
@@ -481,9 +371,9 @@ var maxStep = 0.05;
 var wobbleSpeed = 8, wobbleDist = 0.07;
  
 House.prototype.act = function(step) {
-   this.wobble += step * wobbleSpeed;
-   var wobblePos = Math.sin(this.wobble) * wobbleDist;
-   this.pos = this.basePos.plus(new Vector(0, wobblePos));
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
 };
  
 var playerXSpeed = 15;
@@ -519,14 +409,14 @@ Player.prototype.moveY = function(step, level, keys) {
     // The floor is also an obstacle -- only allow players to 
     // jump if they are touching some obstacle.
     if (obstacle) {
-      level.playerTouched(obstacle);
-      if (keys.up && this.speed.y > 0)
-        this.speed.y = -jumpSpeed;
-      else
-        this.speed.y = 0;
-      } else {
-       this.pos = newPos;
-	  }
+		level.playerTouched(obstacle);
+		if (keys.up && this.speed.y > 0)
+		this.speed.y = -jumpSpeed;
+    else
+		this.speed.y = 0;
+    } else {
+		this.pos = newPos;
+	}
 };
  
 Player.prototype.act = function(step, level, keys) {
@@ -535,11 +425,11 @@ Player.prototype.act = function(step, level, keys) {
  
     var otherActor = level.actorAt(this);
     if (otherActor)
-      level.playerTouched(otherActor.type, otherActor);
+		level.playerTouched(otherActor.type, otherActor);
     // Losing animation
     if (level.status == "lost") {
-      this.pos.y += step;
-      this.size.y -= step;
+		this.pos.y += step;
+		this.size.y -= step;
     }
 };
  
@@ -548,10 +438,10 @@ Level.prototype.playerTouched = function(type, actor) {
     // if the player touches lava and the player hasn't won
     // Player loses
     if (type == "lava" && this.status == null || type == "spikes" && this.status == null) {
-      this.status = "lost";
-      this.finishDelay = 1;
+		this.status = "lost";
+		this.finishDelay = 1;
 	} else if (type == "coin") {
-      this.actors = this.actors.filter(function(other) {
+		this.actors = this.actors.filter(function(other) {
         return other != actor;
     });
     // If there aren't any coins left, player wins
@@ -562,25 +452,25 @@ Level.prototype.playerTouched = function(type, actor) {
         this.finishDelay = 1;
     }
     } else if (type == "key") {
-      this.actors = this.actors.filter(function(other) {
-        return other != actor;
-	  });
+		this.actors = this.actors.filter(function(other) {
+		return other != actor;
+		});
     }
 	else if (type == "door") {
-      this.actors = this.actors.filter(function(other) {
-        return other != actor;
-    });
+		this.actors = this.actors.filter(function(other) {
+			return other != actor;
+		});
     //If you reached the end of the level
     if (!this.actors.some(function(actor) {
             return actor.type == "door";
-        })) {
+		})) {
         this.status = "won";
         this.finishDelay = 1;
     }
     }
 	else if (type == "house") {
-      this.actors = this.actors.filter(function(other) {
-        return other != actor;
+		this.actors = this.actors.filter(function(other) {
+		return other != actor;
     });
     //If you reached the end of the level
     if (!this.actors.some(function(actor) {
@@ -605,14 +495,14 @@ function trackKeys(codes) {
     // otherwise it would be garbage collected
  
     function handler(event) {
-      if (codes.hasOwnProperty(event.keyCode)) {
-        // If the event is keydown, set down to true. Else set to false.
-        var down = event.type == "keydown";
-        pressed[codes[event.keyCode]] = down;
-        // We don't want the key press to scroll the browser window, 
-        // This stops the event from continuing to be processed
-        event.preventDefault();
-      }
+		if (codes.hasOwnProperty(event.keyCode)) {
+			// If the event is keydown, set down to true. Else set to false.
+			var down = event.type == "keydown";
+			pressed[codes[event.keyCode]] = down;
+			// We don't want the key press to scroll the browser window, 
+			// This stops the event from continuing to be processed
+			event.preventDefault();
+		}
     }
     addEventListener("keydown", handler);
     addEventListener("keyup", handler);
@@ -624,12 +514,12 @@ function trackKeys(codes) {
 function runAnimation(frameFunc) {
     var lastTime = null;
     function frame(time) {
-      var stop = false;
-      if (lastTime != null) {
-       // Set a maximum frame step of 100 milliseconds to prevent
-       // having big jumps
-       var timeStep = Math.min(time - lastTime, 100) / 1000;
-       stop = frameFunc(timeStep) === false;
+	var stop = false;
+	if (lastTime != null) {
+		// Set a maximum frame step of 100 milliseconds to prevent
+		// having big jumps
+		var timeStep = Math.min(time - lastTime, 100) / 1000;
+		stop = frameFunc(timeStep) === false;
     }
     lastTime = time;
     if (!stop)
@@ -653,8 +543,8 @@ function runLevel(level, Display, andThen) {
     if (level.isFinished()) {
         display.clear();
         if (andThen)
-          andThen(level.status);
-        return false;
+			andThen(level.status);
+		return false;
     }
     });
 }
@@ -665,12 +555,11 @@ function runGame(plans, Display) {
     // Pass in a reference to Display function, DOMDisplay (in index.html).
     runLevel(new Level(plans[n]), Display, function(status) {
         if (status == "lost")
-          startLevel(n);
+			startLevel(n);
         else if (n < plans.length - 1)
-          startLevel(n + 1);
+			startLevel(n + 1);
         else
-          console.log("You win!");
-		  url("images/won.gif");
+			console.log("won.gif");
     });
     }
     startLevel(0);
