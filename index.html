@@ -1,24 +1,24 @@
 <!doctype html>
 <script src="code/game.js"></script>
 <script src="code/game_levels.js"></script>
-<script src="code/canvas.html"></script>
+<script src="code/canvas.js"></script>
 
 <link rel="stylesheet" href="css/game.css">
 
 <body>
-	<canvas id = 'canvas' width = 500 height = 500 style = "z-Index: 1" ></canvas>
+	<canvas id = 'canvas' width = 2000 height = 1000 style = "z-Index: 1" ></canvas>
 	
 	<button id = "startButton" type = "submit" onclick = 'runTheGame()'>Ready to play Dog Days!? Click to Start.</button>
 	
-  <script>
-  function runTheGame()
-  {
-  var theCanvas = document.getElementById('canvas');
-  var theButton = document.getElementById('startButton');
-  theButton.style.visibility = 'hidden';
-  theCanvas.remove();
-  runGame(GAME_LEVELS, DOMDisplay);
-  }
+	<script>
+	function runTheGame()
+	{
+	var theCanvas = document.getElementById('canvas');
+	var theButton = document.getElementById('startButton');
+	theButton.style.visibility = 'hidden';
+	theCanvas.remove();
+	runGame(GAME_LEVELS, DOMDisplay);
+	}
   
   </script>
 </body>
